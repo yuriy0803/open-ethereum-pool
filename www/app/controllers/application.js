@@ -1,8 +1,10 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 import config from '../config/environment';
 
 export default Controller.extend({
+  intl: inject(),
   get config() {
     return config.APP;
   },
@@ -63,6 +65,20 @@ export default Controller.extend({
   lastBlockFound: computed('model', {
     get() {
       return parseInt(this.get('model.lastBlockFound')) || 0;
+    }
+  }),
+
+  // FIXME
+  languages: computed({
+    get() {
+      let intl = this.get('intl');
+      return [ { name: intl.t('lang.korean'), value: 'ko'}, { name: intl.t('lang.english'), value: 'en-us'} ];
+    }
+  }),
+
+  selectedLanguage: computed({
+    get() {
+      return $.cookie('lang');
     }
   }),
 
