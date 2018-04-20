@@ -33,17 +33,18 @@ export default Route.extend({
   intl: inject(),
   selectedLanguage: null,
   poolSettings: null,
+  poolCharts: null,
 
   beforeModel() {
     let locale = this.get('selectedLanguage');
     if (!locale) {
       // read cookie
-      locale = Ember.$.cookie('lang');
+      locale = $.cookie('lang');
       // pick a locale
       locale = selectLocale(locale);
 
       this.get('intl').setLocale(locale);
-      Ember.$.cookie('lang', locale);
+      $.cookie('lang', locale);
       console.log('INFO: locale selected - ' + locale);
       this.set('selectedLanguage', locale);
     }
@@ -52,14 +53,14 @@ export default Route.extend({
     if (!settings) {
       let self = this;
       let url = config.APP.ApiUrl + 'api/settings';
-      Ember.$.ajax({
+      $.ajax({
         url: url,
         type: 'GET',
         header: {
           'Accept': 'application/json'
         },
         success: function(data) {
-          settings = Ember.Object.create(data);
+          settings = EmberObject.create(data);
           self.set('poolSettings', settings);
           console.log('INFO: pool settings loaded..');
         },
@@ -80,8 +81,8 @@ export default Route.extend({
       let locale = selectLocale(selected);
       this.get('intl').setLocale(locale);
       this.set('selectedLanguage', locale);
-      Ember.$.cookie('lang', locale);
-      Ember.$('#selectedLanguage').html(locale + '<b class="caret"></b>');
+      $.cookie('lang', locale);
+      $('#selectedLanguage').html(locale + '<b class="caret"></b>');
 
       return true;
     }
@@ -89,7 +90,17 @@ export default Route.extend({
 
 	model: function() {
     let url = config.APP.ApiUrl + 'api/stats';
+    let charts = this.get('poolCharts');
+    if (!charts) {
+      url += '/chart';
+    }
+    let self = this;
     return $.getJSON(url).then(function(data) {
+      if (!charts) {
+        self.set('poolCharts', data.poolCharts);
+      } else {
+        data.poolCharts = self.get('poolCharts');
+      }
       return EmberObject.create(data);
     });
 	},
