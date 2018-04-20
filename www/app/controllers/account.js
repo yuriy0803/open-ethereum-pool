@@ -47,7 +47,7 @@ export default Controller.extend({
                     },
                     yAxis: {
                         title: {
-                            text: "HASHRATE"
+                            text: "HashRate"
                         },
                         min: 0
                     },
@@ -127,6 +127,13 @@ export default Controller.extend({
                         }()
                     }]
                 };
+            a.title.text = this.get('config.highcharts.account.title') || "";
+            a.yAxis.title.text = this.get('config.highcharts.account.ytitle') || "Hashrate";
+            a.chart.height = this.get('config.highcharts.account.height') || 300;
+            a.chart.type = this.get('config.highcharts.account.type') || 'spline';
+            var colors = this.get('config.highcharts.account.color');
+            a.series[0].color = colors[0] || '#e99002';
+            a.series[1].color = colors[1] || '#1994b8';
             return a;
         }
     }),

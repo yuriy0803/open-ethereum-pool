@@ -85,7 +85,7 @@ export default Controller.extend({
                     },
                     yAxis: {
                         title: {
-                            text: "HASHRATE",
+                            text: "Pool Hashrate",
                             style: {
                                 color: "#000"
                             }
@@ -143,6 +143,11 @@ export default Controller.extend({
                         }()
                     }]
                 };
+            a.title.text = this.get('config.highcharts.main.title') || "";
+            a.yAxis.title.text = this.get('config.highcharts.main.ytitle') || "Pool Hashrate";
+            a.chart.height = this.get('config.highcharts.main.height') || 300;
+            a.chart.type = this.get('config.highcharts.main.type') || 'spline';
+            a.series[0].color = this.get('config.highcharts.main.color') || '#15b7bd';
             return a;
         }
     })
