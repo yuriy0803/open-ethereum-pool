@@ -99,6 +99,10 @@ export default Route.extend({
       }
 
       return true;
+    },
+
+    toggleMenu: function() {
+      Ember.$('.navbar-collapse.in').attr("aria-expanded", false).removeClass("in");
     }
   },
 
