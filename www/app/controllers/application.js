@@ -71,14 +71,20 @@ export default Controller.extend({
   // FIXME
   languages: computed({
     get() {
-      let intl = this.get('intl');
-      return [ { name: intl.t('lang.korean'), value: 'ko'}, { name: intl.t('lang.english'), value: 'en-us'} ];
+      return this.get('model.languages');
     }
   }),
 
   selectedLanguage: computed({
     get() {
-      return $.cookie('lang');
+      var langs = this.get('languages');
+      var lang = $.cookie('lang');
+      for (var i = 0; i < langs.length; i++) {
+        if (langs[i].value == lang) {
+          return langs[i].name;
+        }
+      }
+      return lang;
     }
   }),
 

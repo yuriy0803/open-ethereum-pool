@@ -32,6 +32,7 @@ function selectLocale(selected) {
 export default Route.extend({
   intl: inject(),
   selectedLanguage: null,
+  languages: null,
   poolSettings: null,
   poolCharts: null,
   chartTimestamp: 0,
@@ -49,6 +50,12 @@ export default Route.extend({
       console.log('INFO: locale selected - ' + locale);
       this.set('selectedLanguage', locale);
     }
+
+    let intl = this.get('intl');
+    this.set('languages', [
+      { name: intl.t('lang.korean'), value: 'ko'},
+      { name: intl.t('lang.english'), value: 'en-us'}
+    ]);
 
     let settings = this.get('poolSettings');
     if (!settings) {
@@ -83,7 +90,13 @@ export default Route.extend({
       this.get('intl').setLocale(locale);
       this.set('selectedLanguage', locale);
       $.cookie('lang', locale);
-      $('#selectedLanguage').html(locale + '<b class="caret"></b>');
+      let languages = this.get('languages');
+      for (var i = 0; i < languages.length; i++) {
+        if (languages[i].value == locale) {
+          $('#selectedLanguage').html(languages[i].name + '<b class="caret"></b>');
+          break;
+        }
+      }
 
       return true;
     }
@@ -111,6 +124,7 @@ export default Route.extend({
   setupController: function(controller, model) {
     let settings = this.get('poolSettings');
     model.settings = settings;
+    model.languages = this.get('languages');
     this._super(controller, model);
     later(this, this.refresh, 5000);
   }
