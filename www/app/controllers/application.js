@@ -96,6 +96,25 @@ export default Controller.extend({
     }
   }),
 
+  currencies: computed('model', {
+    get() {
+      return config.APP.currencies;
+    }
+  }),
+
+  selectedCurrency: computed({
+    get() {
+      var currencies = this.get('currencies');
+      var currency = $.cookie('currency');
+      for (var i = 0; i < currencies.length; i++) {
+        if (currencies[i].value === currency) {
+          return currencies[i].name;
+        }
+      }
+      return currency;
+    }
+  }),
+
   roundVariance: computed('model', {
     get() {
       let percent = this.get('model.stats.roundShares') / this.get('difficulty');

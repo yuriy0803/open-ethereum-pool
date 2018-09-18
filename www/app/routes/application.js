@@ -36,6 +36,10 @@ export default Route.extend({
   poolSettings: null,
   poolCharts: null,
   chartTimestamp: 0,
+  priceInfo: null,
+  priceTimestamp: 0,
+  currencies: null,
+  selectedCurrency: null,
 
   beforeModel() {
     let locale = this.get('selectedLanguage');
@@ -49,6 +53,16 @@ export default Route.extend({
       $.cookie('lang', locale);
       console.log('INFO: locale selected - ' + locale);
       this.set('selectedLanguage', locale);
+
+      // read currency cookie
+      let curr = Ember.$.cookie('currency');
+      // or read default currency
+      curr = curr ? curr : config.APP.defaultCurrencies[locale.substr(0, 2)];
+      if (Object.values(config.APP.defaultCurrencies).indexOf(curr) > -1) {
+        this.set('selectedCurrency', curr);
+      } else {
+        this.set('selectedCurrency', 'USD');
+      }
     }
 
     let intl = this.get('intl');
@@ -78,6 +92,21 @@ export default Route.extend({
         }
       });
     }
+
+    let price = this.get('priceInfo');
+    let needUpdatePrice = new Date().getTime() - this.getWithDefault('priceTimestamp', 0) > (config.APP.priceInterval || 3*60000 /* 3 min */);
+    if ((needUpdatePrice || !price) && config.APP.priceApiUrl) {
+      let self = this;
+      let url = config.APP.priceApiUrl;
+
+      Ember.$.getJSON(url).then(function(data) {
+          price = Ember.Object.create(data);
+          self.set('priceInfo', price);
+          self.set('priceTimestamp', new Date().getTime());
+          console.log('INFO: price info loaded..');
+      });
+    }
+
   },
 
   actions: {
@@ -94,6 +123,32 @@ export default Route.extend({
       for (var i = 0; i < languages.length; i++) {
         if (languages[i].value == locale) {
           $('#selectedLanguage').html(languages[i].name + '<b class="caret"></b>');
+          break;
+        }
+      }
+
+      return true;
+    },
+
+    selectCurrency: function(currency) {
+      let selected = currency;
+      if (typeof currency === 'undefined') {
+        return true;
+      }
+      Ember.$.cookie('currency', currency);
+      let currencies = Object.keys(config.APP.currencies);
+      for (var i = 0; i < currencies.length; i++) {
+        if (currencies[i] === currency) {
+          var symbol = config.APP.currencies[currency];
+          Ember.$('#selectedCurrency').html(symbol + '<b class="caret"></b>');
+          var price = this.get('priceInfo');
+          if (price && price[currency]) {
+            currency = price[currency];
+            var parsed = parseFloat(currency).toFixed(3);
+            Ember.$('#currentPrice').html(parsed);
+          } else {
+            Ember.$('#currentPrice').html('--');
+          }
           break;
         }
       }
@@ -129,6 +184,9 @@ export default Route.extend({
     let settings = this.get('poolSettings');
     model.settings = settings;
     model.languages = this.get('languages');
+    model.currencies = config.APP.currencies;
+    model.selectedCurrency = this.get('selectedCurrency');
+    model.priceInfo = this.get('priceInfo');
     this._super(controller, model);
     later(this, this.refresh, 5000);
   }
