@@ -35,6 +35,14 @@ export default Controller.extend({
     }
   }),
 
+  blockReward: computed('model', {
+    get() {
+      var blockReward = this.get('model.blockReward');
+      blockReward = blockReward * 1e-18;
+      return blockReward;
+    }
+  }),
+
   hashrate: computed('difficulty', {
     get() {
       return this.getWithDefault('difficulty', 0) / config.APP.BlockTime;
