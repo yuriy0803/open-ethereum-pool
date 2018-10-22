@@ -27,10 +27,6 @@ export default Route.extend({
       }
       data.login = params.login;
 
-      // reverse payments
-      if (data.payments) {
-        data.payments = data.payments.reverse();
-      }
       return EmberObject.create(data);
     });
 	},
