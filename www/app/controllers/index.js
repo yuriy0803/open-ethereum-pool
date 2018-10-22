@@ -169,7 +169,12 @@ export default Controller.extend({
                                     }
                                     var x = now, y = e.getWithDefault("model.hashrate");
                                     var d = x.toLocaleString();
-                                    series.addPoint({x: x, y: y, d:d}, true, shift);
+                                    var point = {x: x, y: y, d: d};
+                                    if (x % 1800000 < 3000) {
+                                      // enable markers every 30m, err range ~3s
+                                      point.marker = { enabled: true };
+                                    }
+                                    series.addPoint(point, true, shift);
                                 }, e.get('config.highcharts.main.interval') || 60000);
                             }
                         }
@@ -242,10 +247,16 @@ export default Controller.extend({
                         enabled: false
                     },
                     plotOptions: {
-                        line: {
-                            pointInterval: 5
+                        areaspline: {
+                            marker: {
+                                enabled: false
+                            }
                         },
-                        pointInterval:10
+                        spline: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
                     },
                     series: [{
                         color: "#15BD27",
@@ -258,7 +269,12 @@ export default Controller.extend({
                                     var x = new Date(1000 * d.x);
                                     var l = x.toLocaleString();
                                     var y = d.y;
-                                    a.push({x: x, y: y, d: l});
+                                    var point = {x: x, y: y, d: l};
+                                    if (x % 1800000 < 3000) {
+                                      // enable markers every 30m, err range ~3s
+                                      point.marker = { enabled: true };
+                                    }
+                                    a.push(point);
                                 });
                             }
                             var l = now.toLocaleString();
