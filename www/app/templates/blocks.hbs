@@ -19,12 +19,12 @@
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
         <div class="display">
           <div class="icon">
-            <i class="fa fa-cubes"></i>
+            <i class="fa fa-hourglass-half"></i>
           </div>
           <div class="number">
-            <h3>{{t "account.blocks.found"}}</h3>
+            <h3>{{t "home.blocktime"}}</h3>
             <div>
-              <span>{{format-number model.maturedTotal fallback='0'}}</span>
+              <span>{{format-number stats.blockTime}} s</span>
             </div>
           </div>
         </div>
@@ -57,6 +57,67 @@
           </div>
         </div>
       </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-cubes"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "account.blocks.found"}}</h3>
+            <div>
+              <span>{{format-number model.maturedTotal fallback='0'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-clock-o"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "home.lastfound"}}</h3>
+            <div>
+              {{#if stats.model.stats.lastBlockFound}}
+              <span>{{seconds-to-rel stats.model.stats.lastBlockFound}}</span>
+              {{else}}
+              <span>{{t "home.no_block_found"}}</span>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-tachometer"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "home.pool_hashrate"}}</h3>
+            <div>
+              <span>{{format-hashrate stats.model.hashrate}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-percent"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "home.round_luck"}}</h3>
+            <div>
+              <span>{{format-number stats.roundVariance style='percent'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
