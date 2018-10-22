@@ -28,13 +28,11 @@ type RedisClient struct {
 
 type PoolCharts struct {
 	Timestamp  int64  `json:"x"`
-	TimeFormat string `json:"timeFormat"`
 	PoolHash   int64  `json:"y"`
 }
 
 type MinerCharts struct {
 	Timestamp      int64  `json:"x"`
-	TimeFormat     string `json:"timeFormat"`
 	MinerHash      int64  `json:"minerHash"`
 	MinerLargeHash int64  `json:"minerLargeHash"`
 	WorkerOnline   string `json:"workerOnline"`
@@ -193,7 +191,6 @@ func convertPoolChartsResults(raw *redis.ZSliceCmd) []*PoolCharts {
 		pc := PoolCharts{}
 		pc.Timestamp = int64(v.Score)
 		str := v.Member.(string)
-		pc.TimeFormat = str[strings.Index(str, ":")+1 : strings.LastIndex(str, ":")]
 		pc.PoolHash, _ = strconv.ParseInt(str[strings.LastIndex(str, ":")+1:], 10, 64)
 		result = append(result, &pc)
 	}
@@ -211,7 +208,6 @@ func convertMinerChartsResults(raw *redis.ZSliceCmd) []*MinerCharts {
 		mc := MinerCharts{}
 		mc.Timestamp = int64(v.Score)
 		str := v.Member.(string)
-		mc.TimeFormat = strings.Split(str, ":")[1]
 		mc.MinerHash, _ = strconv.ParseInt(strings.Split(str, ":")[2], 10, 64)
 		mc.MinerLargeHash, _ = strconv.ParseInt(strings.Split(str, ":")[3], 10, 64)
 		mc.WorkerOnline = strings.Split(str, ":")[4]
