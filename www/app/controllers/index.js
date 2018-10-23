@@ -87,11 +87,6 @@ export default Controller.extend({
       return '---';
     }
   }),
-  LastBlockFound: computed('stats', {
-    get() {
-      return this.getWithDefault('stats.model.stats.lastBlockFound');
-    }
-  }),
 
   // try to read some settings from the model.settings
   PayoutThreshold: computed('settings', {

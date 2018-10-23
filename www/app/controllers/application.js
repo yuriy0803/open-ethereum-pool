@@ -56,7 +56,7 @@ export default Controller.extend({
 
   hashrate: computed('difficulty', {
     get() {
-      var blockTime = this.get('blockTime');
+      var blockTime = this.getWithDefault('blockTime', config.APP.BlockTime);
       return this.getWithDefault('difficulty', 0) / blockTime;
     }
   }),
@@ -84,7 +84,7 @@ export default Controller.extend({
 
   lastBlockFound: computed('model', {
     get() {
-      return parseInt(this.get('model.lastBlockFound')) || 0;
+      return parseInt(this.getWithDefault('model.stats.lastBlockFound', 0));
     }
   }),
 

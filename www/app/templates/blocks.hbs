@@ -80,8 +80,8 @@
           <div class="number">
             <h3>{{t "home.lastfound"}}</h3>
             <div>
-              {{#if stats.model.stats.lastBlockFound}}
-              <span>{{seconds-to-rel stats.model.stats.lastBlockFound}}</span>
+              {{#if stats.lastBlockFound}}
+              <span>{{seconds-to-rel stats.lastBlockFound}}</span>
               {{else}}
               <span>{{t "home.no_block_found"}}</span>
               {{/if}}
