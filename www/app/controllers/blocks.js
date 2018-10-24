@@ -19,6 +19,16 @@ export default Controller.extend({
     }
   }),
 
+  recentPoolLuck: computed('model', {
+    get() {
+      var luck = this.get('model.luck');
+      if (luck[64]) {
+        return luck["64"].luck;
+      }
+      return '60';
+    }
+  }),
+
   chartOptions: computed("model.luckCharts", 'stats', {
         get() {
             var e = this,

@@ -61,12 +61,12 @@
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
         <div class="display">
           <div class="icon">
-            <i class="fa fa-cubes"></i>
+            <i class="fa fa-users"></i>
           </div>
           <div class="number">
-            <h3>{{t "account.blocks.found"}}</h3>
+            <h3>{{t "home.miners"}}</h3>
             <div>
-              <span>{{format-number model.maturedTotal fallback='0'}}</span>
+              <span>{{format-number stats.model.minersTotal}}</span>
             </div>
           </div>
         </div>
@@ -113,6 +113,62 @@
             <h3>{{t "home.round_luck"}}</h3>
             <div>
               <span>{{format-number stats.roundVariance style='percent'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-cubes"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "account.blocks.found"}}</h3>
+            <div>
+              <span>{{format-number model.maturedTotal fallback='0'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-cloud"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "block.immature_blocks"}}</h3>
+            <div>
+              <span>{{format-number model.immatureTotal fallback='0'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-cloud-upload"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "block.new"}}</h3>
+            <div>
+              <span>{{format-number model.candidatesTotal fallback='0'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
+        <div class="display">
+          <div class="icon">
+            <i class="fa fa-percent"></i>
+          </div>
+          <div class="number">
+            <h3>{{t "block.recent_pool_luck"}}</h3>
+            <div>
+              <span>{{format-number recentPoolLuck style='percent'}}</span>
             </div>
           </div>
         </div>

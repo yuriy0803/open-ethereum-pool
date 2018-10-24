@@ -112,6 +112,7 @@ block:
   height: 높이
   hash: 해시
   time_found: 발견된 시간
+  recent_pool_luck: 최근 풀 Luck
   variance: 쉐어 분산(쉐어/난이도)
   matured: 확정된 블록
   immature_blocks: 미성숙 블록

@@ -112,6 +112,7 @@ block:
   height: Height
   hash: Hash
   time_found: Time Found
+  recent_pool_luck: Recent Pool Luck
   variance: Share Variance (Shares/Diff)
   matured: Matured Blocks
   immature_blocks: Immature Blocks
