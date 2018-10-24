@@ -6,6 +6,7 @@ import config from '../config/environment';
 export default Route.extend({
   minerCharts: null,
   paymentCharts: null,
+  payments: null,
   chartTimestamp: 0,
 
 	model: function(params) {
@@ -16,7 +17,17 @@ export default Route.extend({
       charts = null;
     }
     let self = this;
-    return $.getJSON(url).then(function(data) {
+    return $.ajax({
+      url: url,
+      type: "GET",
+      dataType: "json",
+      beforeSend: function(r) {
+        if (charts) {
+          var lastmod = self.getWithDefault("chartTimestamp", 0);
+          r.setRequestHeader('If-Modified-Since', new Date(lastmod).toGMTString());
+        }
+      }
+    }).then(function(data) {
       if (!charts) {
         self.set('minerCharts', data.minerCharts);
         self.set('paymentCharts', data.paymentCharts);
@@ -27,6 +38,12 @@ export default Route.extend({
       }
       data.login = params.login;
 
+      // check payments is cached or not
+      if (data.payments) {
+        self.set('payments', data.payments);
+      } else {
+        data.payments = self.get('payments');
+      }
       return EmberObject.create(data);
     });
 	},

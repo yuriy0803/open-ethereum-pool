@@ -298,10 +298,15 @@ func (s *ApiServer) MinersIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *ApiServer) BlocksIndex(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "no-cache")
-	w.WriteHeader(http.StatusOK)
+	if (*r).Method == "OPTIONS" {
+		w.Header().Set("Access-Control-Allow-Headers", "If-Modified-Since,If-None-Match")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Max-Age", "86400")
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
 	reply := make(map[string]interface{})
 	stats := s.getStats()
@@ -314,7 +319,60 @@ func (s *ApiServer) BlocksIndex(w http.ResponseWriter, r *http.Request) {
 		reply["candidatesTotal"] = stats["candidatesTotal"]
 		reply["luck"] = stats["luck"]
 		reply["luckCharts"] = stats["luckCharts"]
+
+		// get ETag
+		lastetag := (*r).Header.Get("If-None-Match")
+		// make ETag
+		etag := `"OEP/` + fmt.Sprintf("%d/%d/%d", reply["maturedTotal"], reply["immatureTotal"], reply["candidatesTotal"]) + `"`
+
+		// get If-Modified-Since
+		lastmod := (*r).Header.Get("If-Modified-Since")
+		for lastmod != "" && etag == lastetag {
+			last, err := http.ParseTime(lastmod)
+			if err != nil {
+				break
+			}
+			if stats["luckCharts"] != nil {
+				luckCharts, _ := stats["luckCharts"].([]*storage.LuckCharts)
+				if len(luckCharts) > 0 {
+					timestamp := luckCharts[len(luckCharts)-1].Timestamp
+					if time.Unix(timestamp, 0).Before(last) {
+						reply["luckCharts"] = nil
+					}
+				}
+			}
+			if stats["immature"] != nil {
+				immature, _ := stats["immature"].([]*storage.BlockData)
+				if len(immature) > 0 {
+					timestamp := immature[0].Timestamp
+					if time.Unix(timestamp, 0).Before(last) {
+						reply["immature"] = nil
+					}
+				}
+			}
+			if stats["candidates"] != nil {
+				candidates, _ := stats["candidates"].([]*storage.BlockData)
+				if len(candidates) > 0 {
+					timestamp := candidates[0].Timestamp
+					if time.Unix(timestamp, 0).Before(last) {
+						reply["candidates"] = nil
+					}
+				}
+			}
+			if stats["matured"] != nil {
+				matured, _ := stats["matured"].([]*storage.BlockData)
+				if len(matured) > 0 {
+					timestamp := matured[0].Timestamp
+					if time.Unix(timestamp, 0).Before(last) {
+						reply["matured"] = nil
+					}
+				}
+			}
+			break
+		}
 	}
+	w.Header().Set("Cache-Control", "no-cache")
+	w.WriteHeader(http.StatusOK)
 
 	err := json.NewEncoder(w).Encode(reply)
 	if err != nil {
@@ -343,8 +401,16 @@ func (s *ApiServer) PaymentsIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *ApiServer) AccountIndex(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	if (*r).Method == "OPTIONS" {
+		w.Header().Set("Access-Control-Allow-Headers", "If-Modified-Since")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Max-Age", "86400")
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Cache-Control", "no-cache")
 
 	login := strings.ToLower(mux.Vars(r)["login"])
@@ -401,6 +467,20 @@ func (s *ApiServer) AccountIndex(w http.ResponseWriter, r *http.Request) {
 			}
 			stats["paymentCharts"] = payments
 		}
+
+		// check If-Modified-Since
+		lastmod := (*r).Header.Get("If-Modified-Since")
+		if lastmod != "" && stats["payments"] != nil {
+			payments, _ := stats["payments"].([]map[string]interface{})
+			if len(payments) > 0 {
+				timestamp := payments[len(payments)-1]["timestamp"].(int64)
+				last, err := http.ParseTime(lastmod)
+				if err == nil && time.Unix(timestamp, 0).Before(last) {
+					stats["payments"] = nil
+				}
+			}
+		}
+
 		reply = &Entry{stats: stats, updatedAt: now, hasChart: useChart}
 		s.miners[login] = reply
 	}
