@@ -21,6 +21,33 @@ export default Controller.extend({
                         events: {
                             load: function() {
                                 var self = this;
+                                var series = this.series;
+                                t = e.getWithDefault("model.minerCharts", []);
+                                var a = [];
+                                var b = [];
+
+                                // reload chart
+                                while (new Date() - series[0].data[series[0].data.length - 1].x > 5*60*1000) {
+                                    if (!t || t.length == 0)
+                                        break;
+                                    t.forEach(function(e) {
+                                        var x = new Date(1000 * e.x);
+                                        var l = x.toLocaleString();
+                                        var y = e.minerLargeHash;
+                                        a.push({x: x, y: y, d: l});
+                                    });
+
+                                    t.forEach(function(e) {
+                                        var x = new Date(1000 * e.x);
+                                        var l = x.toLocaleString();
+                                        var y = e.minerHash;
+                                        b.push({x: x, y: y, d: l});
+                                    });
+                                    series[0].setData(a, true, {}, true);
+                                    series[1].setData(b, true, {}, true);
+                                    break;
+                                }
+
                                 var chartInterval = setInterval(function() {
                                     var series = self.series;
                                     if (!series) {
@@ -104,6 +131,13 @@ export default Controller.extend({
                     },
                     exporting: {
                         enabled: false
+                    },
+                    plotOptions: {
+                        spline: {
+                            marker: {
+                                enabled: true
+                            }
+                        }
                     },
                     series: [{
                         color: "#E99002",
