@@ -372,6 +372,21 @@ section.main-chart {
     background-color: #454c54;
 }
 
+#gradient-0 stop {
+    stop-color: #d4d284; /* areaspline gradient color */
+}
+#gradient-0 stop[offset="0"] {
+    stop-opacity: 0.4;
+}
+#gradient-0 stop[offset="1"] {
+    stop-opacity: 0.0;
+}
+
+.highcharts-color-0 .highcharts-area {
+    fill-opacity: 1;
+    fill: url(#gradient-0);
+}
+
 .highcharts-series-0 path.highcharts-graph {
     stroke: #d5d66e;
 }
@@ -465,6 +480,35 @@ table {
 
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
     border-color: #3e3b3b;
+}
+
+@media (max-width: 767px) {
+    .display>.icon {
+        position: absolute;
+        /* font-size: 30px; */
+    }
+
+    .display>.number span {
+        /* font-size: 30px; /* */
+    }
+}
+
+.stat-holder .progressbar {
+    width:100%;
+    height:5px;
+    position:absolute;
+    left:0;
+    bottom:0;
+    background: #e4e4e4;
+}
+
+.stat-holder .progressbar-item {
+    width:0%;
+    height:5px;
+    position:absolute;
+    left:0;
+    bottom:0;
+    background: #5cb85c;
 }
 
 @media (max-width: 1119px) {

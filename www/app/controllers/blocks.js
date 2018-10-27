@@ -29,6 +29,34 @@ export default Controller.extend({
     }
   }),
 
+  candidatesPercent: computed('model', {
+    get() {
+      if (this.get('model.candidatesTotal') > 0) {
+        var candidates = this.get('model.candidates');
+        if (candidates && candidates[0]) {
+          var delta = this.get('stats.height') - candidates[0].height;
+          var percent = delta / this.getWithDefault('config.ImmatureDepth', 20) * 100;
+          return percent > 100 ? 100 : percent.toFixed(2);
+        }
+      }
+      return 0;
+    }
+  }),
+
+  immaturePercent: computed('model', {
+    get() {
+      if (this.get('model.immatureTotal') > 0) {
+        var immature = this.get('model.immature');
+        if (immature && immature[0]) {
+          var delta = this.get('stats.height') - immature[0].height;
+          var percent = delta / this.getWithDefault('BlockUnlockDepth', 120) * 100;
+          return percent > 100 ? 100 : percent.toFixed(2);
+        }
+      }
+      return 0;
+    }
+  }),
+
   chartOptions: computed("model.luckCharts", 'stats', {
         get() {
             var e = this,

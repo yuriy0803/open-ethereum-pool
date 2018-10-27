@@ -144,6 +144,10 @@
             </div>
           </div>
         </div>
+        {{#if model.immatureTotal}}
+        <div class="progressbar"></div>
+        <div class="progressbar-item" style="width:{{immaturePercent}}%"></div>
+        {{/if}}
       </div>
 
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
@@ -158,6 +162,10 @@
             </div>
           </div>
         </div>
+        {{#if model.candidatesTotal}}
+        <div class="progressbar"></div>
+        <div class="progressbar-item" style="width:{{candidatesPercent}}%"></div>
+        {{/if}}
       </div>
 
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 stat-holder">
