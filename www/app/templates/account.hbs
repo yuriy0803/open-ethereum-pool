@@ -81,7 +81,7 @@
           <div class="number">
             <h3>{{t "account.lastshare"}}</h3>
             <div>
-              <span>{{seconds-to-rel model.stats.lastShare}} ago</span>
+              <span>{{seconds-diff stats.currentTimestamp model.stats.lastShare}}</span>
             </div>
           </div>
         </div>

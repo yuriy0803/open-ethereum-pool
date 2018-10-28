@@ -41,6 +41,7 @@ export default Route.extend({
   priceTimestamp: 0,
   currencies: null,
   selectedCurrency: null,
+  currentTimestamp: 0,
 
   beforeModel() {
     let locale = this.get('selectedLanguage');
@@ -210,6 +211,14 @@ export default Route.extend({
     });
 	},
 
+  updateCurrentTime: function(controller) {
+    var self = this;
+    controller.set('currentTimestamp', parseInt(new Date()/1000));
+    later(function() {
+      self.updateCurrentTime(controller);
+    }, 1000);
+  },
+
   setupController: function(controller, model) {
     let settings = this.get('poolSettings');
     model.settings = settings;
@@ -219,6 +228,7 @@ export default Route.extend({
     model.priceInfo = this.get('priceInfo');
     model.ratioInfo = this.get('ratioInfo');
     this._super(controller, model);
+    this.updateCurrentTime(controller);
     later(this, this.refresh, 5000);
   }
 });
