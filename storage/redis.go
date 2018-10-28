@@ -826,6 +826,7 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 		tx.ZCard(r.formatKey("blocks", "matured"))
 		tx.ZCard(r.formatKey("payments", "all"))
 		tx.ZRevRangeWithScores(r.formatKey("payments", "all"), 0, maxPayments-1)
+		tx.HGet(r.formatKey("finances"), "paid")
 		return nil
 	})
 
@@ -850,6 +851,7 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 	payments := convertPaymentsResults(cmds[10].(*redis.ZSliceCmd))
 	stats["payments"] = payments
 	stats["paymentsTotal"] = cmds[9].(*redis.IntCmd).Val()
+	stats["paymentsAmount"], _ = cmds[11].(*redis.StringCmd).Int64()
 
 	totalHashrate, miners := convertMinersStats(window, cmds[1].(*redis.ZSliceCmd))
 	stats["miners"] = miners
