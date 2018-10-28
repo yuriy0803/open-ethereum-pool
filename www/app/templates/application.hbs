@@ -8,12 +8,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand"><span class="logo-1">{{config.PoolName}}</span> <span class="logo-2">Pool</span></a>
+      {{#link-to 'index' class="navbar-brand"}}<span class="logo-1">{{config.PoolName}}</span> <span class="logo-2">Pool</span>{{/link-to}}
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav" {{action 'toggleMenu'}}>
         {{#active-li currentWhen='index'}}
-          {{#link-to 'index'}}
+          {{#link-to 'index' class="hidden-sm"}}
             <i class="fa fa-home"></i> {{t 'menu.home'}}
           {{/link-to}}
         {{/active-li}}
