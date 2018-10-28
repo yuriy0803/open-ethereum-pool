@@ -63,6 +63,8 @@
 		"payments": 30,
 		"blocks": 50,
 		"miners": 50,
+		"maxAgeMiners": 60,
+		"maxAgePayments": 60,
 		"poolCharts":"0 */20 * * * *",
 		"poolChartsNum":74,
 		"minerCharts":"0 */20 * * * *",

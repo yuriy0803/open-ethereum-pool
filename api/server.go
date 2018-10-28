@@ -37,6 +37,8 @@ type ApiConfig struct {
 	Miners               int64  `json:"miners"`
 	PurgeOnly            bool   `json:"purgeOnly"`
 	PurgeInterval        string `json:"purgeInterval"`
+	MaxAgeMiners         int64  `json:"maxAgeMiners"`
+	MaxAgePayments       int64  `json:"maxAgePayments"`
 }
 
 type ApiServer struct {
@@ -280,7 +282,11 @@ func (s *ApiServer) StatsIndex(w http.ResponseWriter, r *http.Request) {
 func (s *ApiServer) MinersIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "no-cache")
+	if s.config.MaxAgeMiners > 0 {
+		w.Header().Set("Cache-Control", fmt.Sprintf("max-age=%d", s.config.MaxAgeMiners))
+	} else {
+		w.Header().Set("Cache-Control", "no-cache")
+	}
 	w.WriteHeader(http.StatusOK)
 
 	reply := make(map[string]interface{})
@@ -384,7 +390,11 @@ func (s *ApiServer) BlocksIndex(w http.ResponseWriter, r *http.Request) {
 func (s *ApiServer) PaymentsIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "no-cache")
+	if s.config.MaxAgePayments > 0 {
+		w.Header().Set("Cache-Control", fmt.Sprintf("max-age=%d", s.config.MaxAgePayments))
+	} else {
+		w.Header().Set("Cache-Control", "no-cache")
+	}
 	w.WriteHeader(http.StatusOK)
 
 	reply := make(map[string]interface{})
