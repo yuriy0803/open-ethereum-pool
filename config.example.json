@@ -62,6 +62,7 @@
 		"luckWindow": [64, 128, 256],
 		"payments": 30,
 		"blocks": 50,
+		"miners": 50,
 		"poolCharts":"0 */20 * * * *",
 		"poolChartsNum":74,
 		"minerCharts":"0 */20 * * * *",

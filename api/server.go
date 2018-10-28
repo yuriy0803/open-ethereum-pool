@@ -34,6 +34,7 @@ type ApiConfig struct {
 	LuckWindow           []int  `json:"luckWindow"`
 	Payments             int64  `json:"payments"`
 	Blocks               int64  `json:"blocks"`
+	Miners               int64  `json:"miners"`
 	PurgeOnly            bool   `json:"purgeOnly"`
 	PurgeInterval        string `json:"purgeInterval"`
 }
@@ -218,7 +219,7 @@ func (s *ApiServer) purgeStale() {
 
 func (s *ApiServer) collectStats() {
 	start := time.Now()
-	stats, err := s.backend.CollectStats(s.hashrateWindow, s.config.Blocks, s.config.Payments)
+	stats, err := s.backend.CollectStats(s.hashrateWindow, s.config.Blocks, s.config.Payments, s.config.Miners)
 	if err != nil {
 		log.Printf("Failed to fetch stats from backend: %v", err)
 		return
