@@ -81,6 +81,13 @@
 </div>
 {{/if}}
 <div class="container">
+ <ul class="nav nav-tabs">
+  {{#active-li currentWhen='payments' role='presentation'}}
+   {{#link-to 'payments'}}{{t "menu.payments"}}{{/link-to}}
+  {{/active-li}}
+ </ul>
+ <div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade active in" id="payments">
   {{#if model.payments}}
   <h3>{{t "payments.latest_payouts"}}</h3>
   <div class="table-responsive">
@@ -112,4 +119,6 @@
   {{else}}
   <h3>{{t "payments.no_payouts_yet"}}</h3>
   {{/if}}
+  </div>
+ </div>
 </div>

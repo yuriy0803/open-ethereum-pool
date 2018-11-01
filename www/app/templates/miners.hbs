@@ -69,8 +69,15 @@
 </div>
 {{/if}}
 <div class="container">
+ <ul class="nav nav-tabs">
+  {{#active-li currentWhen='miners' role='presentation'}}
+   {{#link-to 'miners'}}{{t "menu.miners"}}{{/link-to}}
+  {{/active-li}}
+ </ul>
+ <div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade active in" id="miners">
   {{#if model.miners}}
-  <h3>{{t "miners.miners"}}</h3>
+  <h3>{{t "miners.online_miners"}}</h3>
   <div class="table-responsive">
     <table class="table table-condensed table-striped">
       <thead>
@@ -94,4 +101,6 @@
   {{else}}
   <h3>{{t "miners.no_miners"}}</h3>
   {{/if}}
+  </div>
+ </div>
 </div>

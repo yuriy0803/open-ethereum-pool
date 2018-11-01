@@ -1,4 +1,4 @@
-<div class="container">
+<div role="tabpanel" class="tab-pane fade active in" id="workers">
 {{#if config.highcharts.account.enabled}}
   {{#unless config.highcharts.account.main}}
   {{high-charts mode=chartMode chartOptions=chartOptions content=chartData}}
