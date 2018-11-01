@@ -209,6 +209,9 @@ h4.note {
 	border-radius: 0 0 5px 5px;
 	border: 1px #eeeeee solid;
 	border-width: 0 1px 1px 1px;
+	border-left: 1px solid #c7c7c7;
+	border-right: 1px solid #c7c7c7;
+	border-bottom: 1px solid #c7c7c7;
 }
 
 code {
@@ -217,6 +220,11 @@ code {
 
 code em {
 	color: #8aad7c;
+}
+
+em.wallet {
+    text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 .container .text-muted a {

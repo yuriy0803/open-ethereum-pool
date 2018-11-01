@@ -32,9 +32,9 @@
 
   <h3>사용 예제</h3>
   <dl class="dl-horizontal">
-    <dt><em>0x0000000000000000000000000000000000000000</em></dt>
+    <dt><em class="wallet">0x0000000000000000000000000000000000000000</em></dt>
     <dd>출금을 위한 지갑 주소<br/>
-      <strong>예:</strong> <code>0x8b92c50e1c39466f900a578edb20a49356c4fe24</code>.
+      <strong>예:</strong> <code><em class="wallet">0x8b92c50e1c39466f900a578edb20a49356c4fe24</em></code>.
     </dd>
     <dt><em>your-worker-1</em><br /><em>your-worker-2</em></dt>
     <dd>
@@ -47,7 +47,7 @@
       <h4>Claymore 예시</h4>
       <p><strong>Claymore 듀얼 마이너 다운로드 (AMD/NVIDIA)</strong>: <a href="https://bitcointalk.org/index.php?topic=1433925.0">[ANN] Bitcointalk.org</a></p>
       <p>
-        <code><em>EthDcrMiner64</em> -epool <em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> -esm 0 -ewal <em>0x0000000000000000000000000000000000000000</em> -eworker <em>your-worker-1</em> -allcoins 1 -allpools 1</code>
+        <pre><code><em>EthDcrMiner64</em> -epool <em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> -esm 0 -ewal <em class="wallet">0x0000000000000000000000000000000000000000</em> -eworker <em>your-worker-1</em> -allcoins 1 -allpools 1</code></pre>
       </p>
       <ul>
         <li><code><em>EthDcrMiner64</em></code> - 윈도우상의 마이너 실행파일 이름. 리눅스/우분투의 경우 <code><em>./ethdcrminer64</em></code>.</li>
@@ -55,7 +55,7 @@
         <li><code><em>-esm 0</em></code> 및 <code><em>{{config.StratumPort}}</em></code> 포트번호는 Stratum 서버의 경우.</li>
         <li><code><em>-esm 3</em></code> 및 <code><em>{{config.NicehashPort}}</em></code> 포트번호는 Nicehash 지원 서버의 경우.</li>
         <li><code><em>{{config.StratumPort}}</em></code> - Stratum Port number</li>
-        <li><code><em>0x0000000000000000000000000000000000000000</em></code> - Your wallet address</li>
+        <li><code><em class="wallet">0x0000000000000000000000000000000000000000</em></code> - Your wallet address</li>
         <li><code><em>your-worker-1</em></code> - Your worker name</li>
       </ul>
 
@@ -63,26 +63,30 @@
       <p>
         <strong>Ethminer 다운로드 (AMD/NVIDIA)</strong>: <a href="https://github.com/ethereum-mining/ethminer/releasesi/latest">Ethminer 소스/바이너리 at Github</a>
       </p>
-      <h5>Stratum 방식</h5>
+      <h5>Stratum - ethminer 버전 v0.14.0 이상</h5>
       <p>
-        <code>ethminer -SP 1 <em>-U</em> -S <em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> -O <em>0x0000000000000000000000000000000000000000</em>.<em>your-worker-1</em> <em>--farm-recheck 2000</em></code>
+        <pre><code>ethminer <em>-U</em> -P <em>stratum1+tcp</em>://<em class="wallet">0x0000000000000000000000000000000000000000</em>.<em>your-worker-1</em>@<em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> <em>--farm-recheck 2000</em></code></pre>
+      </p>
+      <h5>Stratum - ethminer 버전 v0.14.0 미만</h5>
+      <p>
+        <pre><code>ethminer -SP 1 <em>-U</em> -S <em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> -O <em class="wallet">0x0000000000000000000000000000000000000000</em>.<em>your-worker-1</em> <em>--farm-recheck 2000</em></code></pre>
       </p>
       <ul>
         <li><code>-SP 1</code> - Stratum 서버일 경우</li>
         <li><code><em>-U</em></code> - NVIDIA GPU 의 경우 사용. AMD GPU의 경우는 <code><em>-G</em></code>.</li>
         <li><code>-S <em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em></code> - <em>stratum_server_name</em>:<em>stratum_port_number</em></li>
-        <li><code>-O <em>0x0000000000000000000000000000000000000000</em>.<em>your-worker-1</em></code> - your_wallet_address.your_worker_name</li>
+        <li><code>-O <em class="wallet">0x0000000000000000000000000000000000000000</em>.<em>your-worker-1</em></code> - your_wallet_address.your_worker_name</li>
         <li><code><em>--farm-recheck 2000</em></code> - 작업이 바뀔 때마다 2000ms간격을 두고 체크한다. (기본값 500ms. Stratum의 경우 2000ms으로 해야 안정적. eth-proxy의 경우 적은 값 사용)</li>
       </ul>
       <h5>레거시 HTTP 방식</h5>
       <p>
-        <code>ethminer <em>-U</em> -F <em>{{config.HttpHost}}</em>:<em>{{config.HttpPort}}</em>/<em>0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em> <em>--farm-recheck 200</em></code>
+        <pre><code>ethminer <em>-U</em> -F <em>{{config.HttpHost}}</em>:<em>{{config.HttpPort}}</em>/<em class="wallet">0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em> <em>--farm-recheck 200</em></code></pre>
       </p>
       <ul>
         <li><code><em>-U</em></code> - NVIDIA GPU 의 경우 사용. AMD GPU의 경우는 <code><em>-G</em></code>.</li>
-        <li><code>-F <em>{{config.HttpHost}}</em>:<em>{{config.HttpPort}}</em>/<em>0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em></code>
+        <li><code>-F <em>{{config.HttpHost}}</em>:<em>{{config.HttpPort}}</em>/<em class="wallet">0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em></code>
         <ul><li>레거시 HTTP 방식. <em>http_server_name</em>:<em>http_port_number</em></li>
-        <li><code><em>0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em></code> - <em>your_wallet_address</em>.<em>your_worker_name</em></li>
+        <li><code><em class="wallet">0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em></code> - <em>your_wallet_address</em>.<em>your_worker_name</em></li>
         </ul>
         </li>
       </ul>
