@@ -8,6 +8,20 @@ export default Controller.extend({
   stats: computed.reads('applicationController'),
   config: computed.reads('applicationController.config'),
   settings: computed.reads('applicationController.model.settings'),
+  isAMD: false,
+  isLinux: false,
+
+  actions: {
+    selectAmd() {
+      var old = this.get('isAMD');
+      this.set('isAMD', !old);
+    },
+
+    selectLinux() {
+      var old = this.get('isLinux');
+      this.set('isLinux', !old);
+    },
+  },
 
   currencies: computed('stats.model', {
     get() {

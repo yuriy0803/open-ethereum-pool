@@ -14,13 +14,14 @@
         <p>Download the latest version of the ethminer from <a href="https://github.com/ethereum-mining/ethminer/releases">EthMiner github releases page.</a></p>
         <h4>ethminer version &gt;= v0.14.0</h4>
         <p>
-          <pre><code>ethminer <em>-U</em> -P <em>stratum1+tcp</em>://<em class="wallet">0x0000000000000000000000000000000000000000</em>.<em>your-worker-1</em>@<em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> <em>--farm-recheck 2000</em></code></pre>
+          <pre><code>ethminer <em>{{if isAMD "-G"}}{{unless isAMD "-U"}}</em> -P <em>stratum1+tcp</em>://<em class="wallet">0x0000000000000000000000000000000000000000</em>.<em>your-worker-1</em>@<em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> <em>--farm-recheck 2000</em></code></pre>
         </p>
         <h4>ethminer version &lt; v0.14.0</h4>
         <p>
-          <pre><code>ethminer <em>-U</em> -F <em>{{config.HttpHost}}</em>:<em>{{config.HttpPort}}</em>/<em class="wallet">0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em> <em>--farm-recheck 200</em></code></pre>
+          <pre><code>ethminer <em>{{if isAMD "-G"}}{{unless isAMD "-U"}}</em> -F <em>{{config.HttpHost}}</em>:<em>{{config.HttpPort}}</em>/<em class="wallet">0x0000000000000000000000000000000000000000</em>/<em>your-worker-1</em> <em>--farm-recheck 200</em></code></pre>
         </p>
-        <p><span class="label label-info">Hint</span> use <code><em>-U</em></code> option for NVIDIA GPU, <code><em>-G</em></code> option for AMD GPU.</p>
+        <p>{{input type="checkbox" checked=isAMD change=(action "selectAmd")}} use AMD GPU<br />
+        <span class="label label-info">Hint</span> use <code><em>-U</em></code> option for NVIDIA GPU, <code><em>-G</em></code> option for AMD GPU.</p>
       </div>
     </div>
     <div role="tabpanel" class="tab-pane fade active in" id="claymore">
@@ -29,7 +30,8 @@
         <p>Download the latest claymore from <a href="https://bitcointalk.org/index.php?topic=1433925.0">BitcoinTalk claymore thread.</a>
         </p>
         <p>
-          <pre><code><em>EthDcrMiner64</em> -epool <em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> <em>-esm 0</em> -ewal <em class="wallet">0x0000000000000000000000000000000000000000</em> -eworker <em>your-worker-1</em> -allcoins 1 -allpools 1</code></pre>
+          <pre><code><em>{{if isLinux "./ethdcrminer64"}}{{unless isLinux "EthDcrMiner64"}}</em> -epool <em>{{config.StratumHost}}</em>:<em>{{config.StratumPort}}</em> <em>-esm 0</em> -ewal <em class="wallet">0x0000000000000000000000000000000000000000</em> -eworker <em>your-worker-1</em> -allcoins 1 -allpools 1</code></pre>
+          {{input type="checkbox" checked=isLinux change=(action "selectLinux")}} under Linux/ubuntu
         </p>
         <p><span class="label label-info">Hint</span> use <code><em>./ethdcrminer64</em></code> under Linux/ubuntu<br />
         </p>
