@@ -391,7 +391,6 @@ func (s *ApiServer) PaymentsIndex(w http.ResponseWriter, r *http.Request) {
 	if stats != nil {
 		reply["payments"] = stats["payments"]
 		reply["paymentsTotal"] = stats["paymentsTotal"]
-		reply["paymentsAmount"] = stats["paymentsAmount"]
 	}
 
 	err := json.NewEncoder(w).Encode(reply)
