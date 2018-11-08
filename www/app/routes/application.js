@@ -55,7 +55,7 @@ export default Route.extend({
       this.set('selectedLanguage', locale);
 
       // read currency cookie
-      let curr = Ember.$.cookie('currency');
+      let curr = $.cookie('currency');
       // or read default currency
       curr = curr ? curr : config.APP.defaultCurrencies[locale.substr(0, 2)];
       if (Object.values(config.APP.defaultCurrencies).indexOf(curr) > -1) {
@@ -99,8 +99,8 @@ export default Route.extend({
       let self = this;
       let url = config.APP.priceApiUrl;
 
-      Ember.$.getJSON(url).then(function(data) {
-          price = Ember.Object.create(data);
+      $.getJSON(url).then(function(data) {
+          price = EmberObject.create(data);
           self.set('priceInfo', price);
           self.set('priceTimestamp', new Date().getTime());
           console.log('INFO: price info loaded..');
@@ -135,19 +135,19 @@ export default Route.extend({
       if (typeof currency === 'undefined') {
         return true;
       }
-      Ember.$.cookie('currency', currency);
+      $.cookie('currency', currency);
       let currencies = Object.keys(config.APP.currencies);
       for (var i = 0; i < currencies.length; i++) {
         if (currencies[i] === currency) {
           var symbol = config.APP.currencies[currency];
-          Ember.$('#selectedCurrency').html(symbol + '<b class="caret"></b>');
+          $('#selectedCurrency').html(symbol + '<b class="caret"></b>');
           var price = this.get('priceInfo');
           if (price && price[currency]) {
             currency = price[currency];
             var parsed = parseFloat(currency).toFixed(3);
-            Ember.$('#currentPrice').html(parsed);
+            $('#currentPrice').html(parsed);
           } else {
-            Ember.$('#currentPrice').html('--');
+            $('#currentPrice').html('--');
           }
           break;
         }
@@ -157,7 +157,7 @@ export default Route.extend({
     },
 
     toggleMenu: function() {
-      Ember.$('.navbar-collapse.in').attr("aria-expanded", false).removeClass("in");
+      $('.navbar-collapse.in').attr("aria-expanded", false).removeClass("in");
     }
   },
 

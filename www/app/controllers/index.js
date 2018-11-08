@@ -9,26 +9,26 @@ export default Controller.extend({
   config: computed.reads('applicationController.config'),
   settings: computed.reads('applicationController.model.settings'),
 
-  currencies: Ember.computed('stats.model', {
+  currencies: computed('stats.model', {
     get() {
       return this.get('stats.model.currencies');
     }
   }),
 
-  selectedCurrency: Ember.computed('stats.model', {
+  selectedCurrency: computed('stats.model', {
     get() {
       return this.get('stats.model.selectedCurrency');
     }
   }),
 
-  selectedSymbol: Ember.computed('stats.model', {
+  selectedSymbol: computed('stats.model', {
     get() {
       var curr = this.get('stats.model.selectedCurrency', 'USD');
       return this.get('currencies')[curr];
     }
   }),
 
-  coinPrice: Ember.computed('stats.model', {
+  coinPrice: computed('stats.model', {
     get() {
       var price = this.get('stats.model.priceInfo');
       if (price === null) {
@@ -41,7 +41,7 @@ export default Controller.extend({
     }
   }),
 
-  btcPrice: Ember.computed('stats.model', {
+  btcPrice: computed('stats.model', {
     get() {
       var price = this.get('stats.model.priceInfo');
       if (price === null) {
@@ -51,7 +51,7 @@ export default Controller.extend({
       return parseFloat(btc).toFixed(8);
     }
   }),
-  LastBlockFound: Ember.computed('stats', {
+  LastBlockFound: computed('stats', {
     get() {
       return this.getWithDefault('stats.model.stats.lastBlockFound');
     }
@@ -99,7 +99,7 @@ export default Controller.extend({
       return value;
     }
   }),
-  chartOptions: Ember.computed("model.hashrate", {
+  chartOptions: computed("model.hashrate", {
         get() {
             var now = new Date();
             var e = this,

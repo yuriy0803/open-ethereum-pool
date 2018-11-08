@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject } from '@ember/controller';
+import $ from 'jquery';
 import config from '../config/environment';
 
 export default Controller.extend({
@@ -35,6 +36,16 @@ export default Controller.extend({
     }
   }),
 
+  blockTime: computed('model.nodes', {
+    get() {
+      var node = this.get('bestNode');
+      if (node && node.blocktime) {
+        return node.blocktime;
+      }
+      return config.APP.BlockTime;
+    }
+  }),
+
   blockReward: computed('model', {
     get() {
       var blockReward = this.get('model.blockReward');
@@ -45,7 +56,8 @@ export default Controller.extend({
 
   hashrate: computed('difficulty', {
     get() {
-      return this.getWithDefault('difficulty', 0) / config.APP.BlockTime;
+      var blockTime = this.get('blockTime');
+      return this.getWithDefault('difficulty', 0) / blockTime;
     }
   }),
 
@@ -76,8 +88,7 @@ export default Controller.extend({
     }
   }),
 
-  // FIXME
-  languages: computed({
+  languages: computed('model', {
     get() {
       return this.get('model.languages');
     }
